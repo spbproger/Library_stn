@@ -10,3 +10,10 @@
 	- переименовать файл **.env_example** в **.env_docker** и сменить значения переменных `на собственные`
 	- запустить сервер приложения `python manage.py runserver 8000`
 7. Перейти в браузере по адресу `127.0.0.1:8000/admin`
+
+
+---
+Ссылки на шпаргалки по оформлению файла README.md:
+- [Шпаргалка 1](https://skillbox.ru/media/code/yazyk-razmetki-markdown-shpargalka-po-sintaksisu-s-primerami/)
+- [Шпаргалка 2](https://habr.com/ru/post/649363/)
+- [Шпаргалка 3](https://www.markdownguide.org/cheat-sheet/)
