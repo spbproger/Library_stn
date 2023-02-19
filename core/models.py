@@ -6,7 +6,7 @@ class Reader(models.Model):
     surname = models.CharField(max_length=50, verbose_name="Фамилия")
     phone = models.BigIntegerField(verbose_name="Номер телефона")
     status = models.BooleanField(default=True, verbose_name="Активен")
-    book_list = models.ManyToManyField("Book", related_name="books", verbose_name="Список книг")
+    book_list = models.ManyToManyField("Book", blank=True, related_name="books", verbose_name="Список книг")
     created = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
     edited = models.DateTimeField(auto_now=True, verbose_name="Дата редактирования")
 
