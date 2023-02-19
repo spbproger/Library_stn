@@ -6,7 +6,7 @@ class Reader(models.Model):
     surname = models.CharField(max_length=50, verbose_name="Фамилия")
     phone = models.BigIntegerField(verbose_name="Номер телефона")
     status = models.BooleanField(default=True, verbose_name="Активен")
-    book_list = models.CharField(max_length=100, verbose_name="Список книг")
+    book_list = models.ManyToManyField("Book", related_name="books", verbose_name="Список книг")
     created = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
     edited = models.DateTimeField(auto_now=True, verbose_name="Дата редактирования")
 
@@ -21,7 +21,7 @@ class Reader(models.Model):
 class Author(models.Model):
     name = models.CharField(max_length=50, verbose_name="Имя")
     surname = models.CharField(max_length=50, verbose_name="Фамилия")
-    photo = models.ImageField(upload_to="media/%Y/%m/%d/", verbose_name="Фото")
+    photo = models.ImageField(upload_to="media/%Y/%m/%d/", null=True, blank=True, verbose_name="Фото")
     created = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
     edited = models.DateTimeField(auto_now=True, verbose_name="Дата редактирования")
 
@@ -35,14 +35,15 @@ class Author(models.Model):
 
 class Book(models.Model):
     name = models.CharField(max_length=20, verbose_name="Наименование")
-    description = models.SlugField(verbose_name="Описание")
+    description = models.TextField(verbose_name="Описание")
     pages = models.PositiveSmallIntegerField(verbose_name="Количество страниц")
-    authors = models.ManyToManyField(Author, verbose_name="Автор")
+    author = models.ManyToManyField(Author, related_name="authors", verbose_name="Авторы")
     book_num = models.PositiveIntegerField(verbose_name="Количество книг")
 
     class Meta:
         verbose_name = 'Книга'
         verbose_name_plural = 'Книги'
+        ordering = ('-name', )
 
     def __str__(self):
         return self.name
