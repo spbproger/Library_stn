@@ -13,7 +13,7 @@
 
 
 ---
-Ссылки на шпаргалки по оформлению файла README.md:
+Шпаргалки по оформлению файла README.md:
 - [Шпаргалка 1](https://skillbox.ru/media/code/yazyk-razmetki-markdown-shpargalka-po-sintaksisu-s-primerami/)
 - [Шпаргалка 2](https://habr.com/ru/post/649363/)
 - [Шпаргалка 3](https://www.markdownguide.org/cheat-sheet/)
