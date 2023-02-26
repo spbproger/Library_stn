@@ -10,7 +10,7 @@ class BookSerializer(serializers.Serializer):
     author = serializers.SlugRelatedField(
         many=True,
         read_only=True,
-        slug_field='surname'
+        slug_field='fullname'
     )
     book_num = serializers.IntegerField()
 

@@ -17,6 +17,10 @@ class Reader(models.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def fullname(self):
+        return f"{self.name} {self.surname}"
+
 
 class Author(models.Model):
     name = models.CharField(max_length=50, verbose_name="Имя")
@@ -31,6 +35,10 @@ class Author(models.Model):
 
     def __str__(self):
         return f'{self.name} {self.surname}'
+
+    @property
+    def fullname(self):
+        return f"{self.name} {self.surname}"
 
 
 class Book(models.Model):
