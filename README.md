@@ -6,7 +6,7 @@
 3. Установить Docker по [ссылке](https://desktop.docker.com/win/main/amd64/Docker%20Desktop%20Installer.exe?utm_source=docker&utm_medium=webreferral&utm_campaign=dd-smartbutton&utm_location=module)
 4. Запустить установку контейнера с приложением командой `docker compose up -d --build`
 5. Выполнить в терминале своего IDE следующие моменты:
-	- создать суперюзера командой `python manage.py runserver 8000`
+	- создать суперюзера командой `python manage.py createsuperuser`
 	- переименовать файл **.env_example** в **.env_docker** и сменить значения переменных `на собственные`
 	- запустить сервер приложения `python manage.py runserver 8000`
 7. Перейти в браузере по адресу `127.0.0.1:8000/admin`
