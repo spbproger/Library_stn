@@ -16,6 +16,8 @@ class BookSerializer(serializers.Serializer):
 
 
 class ReaderSerializer(serializers.ModelSerializer):
+    book_list = serializers.SlugRelatedField(queryset=Book.objects.all(), slug_field="name", many=True)
+
     class Meta:
         model = Reader
         fields = "__all__"
