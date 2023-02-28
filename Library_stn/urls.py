@@ -22,9 +22,11 @@ from rest_framework.routers import SimpleRouter
 router = SimpleRouter()
 router.register(r'authors', views.AuthorViewSet, basename='author')
 router.register(r'readers', views.ReaderViewSet, basename='reader')
+router.register(r'books', views.BookViewSet, basename='book')
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('books/', include('core.urls')),
+    #path('books/', include('core.urls')),
     path('', include(router.urls)),
 ]
