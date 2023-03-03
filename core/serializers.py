@@ -26,6 +26,17 @@ class BookNewSerializer(serializers.ModelSerializer):
         slug_field="surname"
     )
 
+
+    def validate_author(self, value):
+        """
+        Проверка условия, что указан автор/ы книги
+        """
+        if not value:
+            raise serializers.ValidationError("Укажите автора/ов книги")
+        return value
+
     class Meta:
         model = Book
         fields = "__all__"
+
+

@@ -32,13 +32,15 @@ class Author(models.Model):
     class Meta:
         verbose_name = 'Автор'
         verbose_name_plural = 'Авторы'
-
-    def __str__(self):
-        return f'{self.name} {self.surname}'
+        ordering = ('surname', 'name')
 
     @property
     def fullname(self):
         return f"{self.name} {self.surname}"
+
+    def __str__(self):
+        # return f'{self.name} {self.surname}'
+        return f'{self.fullname}'
 
 
 class Book(models.Model):
