@@ -24,12 +24,19 @@ class AuthorSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class BooksCountValidator:
+    def __call__(self, value):
+        if value < 0:
+            raise serializers.ValidationError("Yе может быть отрицательного количества книг")
+
+
 class BookNewSerializer(serializers.ModelSerializer):
-    author = serializers.SlugRelatedField(
+    author = serializers.SlugRelatedField(validators=['validate_author'],
         queryset=Author.objects.all(),
         many=True,
         slug_field="surname"
     )
+    book_num = serializers.IntegerField(validators=[BooksCountValidator()])
 
     def validate_author(self, value):
         """
