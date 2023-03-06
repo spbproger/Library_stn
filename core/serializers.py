@@ -1,8 +1,13 @@
 from rest_framework import serializers
-from core.models import Book, Author, Reader
+from django.core.validators import RegexValidator
+from .models import Book, Author, Reader
 
 
 class ReaderSerializer(serializers.ModelSerializer):
+    phone = serializers.IntegerField(
+        validators=[RegexValidator(r'^(?:\+79)\d{9,10}$',
+                                   message="Phone number must be entered in the format: "
+                                           "'+79998887766'. Up to 11 digits allowed.")])
     book_list = serializers.SlugRelatedField(
         queryset=Book.objects.all(),
         slug_field="name",
@@ -26,7 +31,6 @@ class BookNewSerializer(serializers.ModelSerializer):
         slug_field="surname"
     )
 
-
     def validate_author(self, value):
         """
         Проверка условия, что указан автор/ы книги
@@ -38,5 +42,3 @@ class BookNewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
         fields = "__all__"
-
-
