@@ -18,7 +18,8 @@ class ReaderSerializer(serializers.ModelSerializer):
         model = Reader
         fields = "__all__"
 
-    
+   
+
     def validate(self, data):
         book_list = data.get('book_list')
         for book in book_list:
