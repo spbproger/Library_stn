@@ -18,6 +18,7 @@ class ReaderSerializer(serializers.ModelSerializer):
         model = Reader
         fields = "__all__"
 
+    
     def validate(self, data):
         book_list = data.get('book_list')
         for book in book_list:
@@ -31,7 +32,7 @@ class ReaderSerializer(serializers.ModelSerializer):
         for book in book_list:
             book.book_num -= 1
             book.save()
-            reader.books.add(book)
+            reader.book_list.add(book)
         return reader
 
     def update(self, instance, validated_data):
