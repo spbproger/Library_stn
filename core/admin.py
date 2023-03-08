@@ -23,7 +23,7 @@ class ReaderAdmin(admin.ModelAdmin):
         }),
     )
 
-    actions = ("change_false_status", "change_true_status", "clear_booklist")
+    actions = ("change_false_status", "change_true_status", "clear_reader_booklist")
 
     @admin.action(description='Изменить статус: Неактивный')
     def change_false_status(self, request, queryset: QuerySet):
@@ -41,22 +41,22 @@ class ReaderAdmin(admin.ModelAdmin):
         queryset.update(status=True)
         self.message_user(request, f'Статус читателя изменен на "Активный"')
 
-    @admin.action(description='Очистить список книг')
-    def clear_booklist(self, request, queryset: QuerySet):
+    @admin.action(description='Очистить список книг читателя')
+    def clear_reader_booklist(self, request, queryset: QuerySet):
         """
         Экшн очистки списка книг на руках у читателя
         """
-        queryset.update(book_list=[])
-        count = queryset.get().pk
-        self.message_user(request, f'Количество книг на руках у читателя: {count}')
+        for obj in queryset:
+            aaaa = obj.book_list
+        self.message_user(request, f'Количество книг на руках у читателя: 0')
 
 
 @admin.register(Author)
 class AuthorAdmin(admin.ModelAdmin):
     list_display = ("surname", "name", "created", "edited")
-    list_filter = ("name", "surname")
+    list_filter = ("surname", )
     list_display_links = ("name", "surname")
-    search_fields = ("surname",)
+    search_fields = ("surname", "name")
 
     fieldsets = (
         (None, {
@@ -71,15 +71,25 @@ class AuthorAdmin(admin.ModelAdmin):
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
     list_display = ("name", "author_link", "description", "pages", "book_num")
-    list_filter = ("author",)
     list_display_links = ("name", "description")
-    search_fields = ("author",)
+    list_filter = ("author", )
+    search_fields = ("author", )
 
     fieldsets = (
         (None, {
             "fields": ("name", "description", "pages", "book_num")
         }),
         ("Укажите автора/ов", {
-            "fields": ("author",)
+            "fields": ("author", )
         }),
     )
+
+    actions = ("clear_book_count", )
+
+    @admin.action(description='Обнулить количество книг')
+    def clear_book_count(self, request, queryset: QuerySet):
+        """
+        Экшн очистки количества книг в библиотеке
+        """
+        queryset.update(book_num=0)
+        self.message_user(request, f'Общее количество выбранных книг установлено равным 0')
