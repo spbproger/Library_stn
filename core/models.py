@@ -64,7 +64,7 @@ class Book(models.Model):
     description = models.TextField(verbose_name="Описание")
     pages = models.PositiveSmallIntegerField(verbose_name="Количество страниц")
     author = models.ForeignKey(Author, on_delete=models.CASCADE, verbose_name="Авторы")
-    book_num = models.PositiveIntegerField(verbose_name="Общее количество книг")
+    book_num = models.PositiveIntegerField(verbose_name="Книг в библиотеке")
 
     class Meta:
         verbose_name = 'Книга'
