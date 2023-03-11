@@ -14,16 +14,10 @@ class ReaderSerializer(serializers.ModelSerializer):
                                              many=True
                                              )
 
-    class Meta:
-        model = Reader
-        fields = "__all__"
-
-    def validate(self, data):
-        book_list = data.get('book_list')
-        for book in book_list:
-            if book.book_num == 0:
-                raise serializers.ValidationError(f"Книгу '{book.name}' добавить невозможно. Нет в наличии.")
-            return data
+    def validate(self, attrs):
+        if len(attrs['book_list']) > 3:
+            raise serializers.ValidationError('На руках у читателя не может быть больше трех книг!')
+        return attrs
 
     def create(self, validated_data):
         book_list = validated_data.pop('book_list', [])
@@ -60,6 +54,10 @@ class ReaderSerializer(serializers.ModelSerializer):
             instance.book_list.remove(book)
 
         return reader
+
+    class Meta:
+        model = Reader
+        fields = "__all__"
 
 
 class AuthorSerializer(serializers.ModelSerializer):
