@@ -46,8 +46,14 @@ class ReaderAdmin(admin.ModelAdmin):
         """
         Экшн очистки списка книг на руках у читателя
         """
-        for obj in queryset:
-            obj.book_list.clear()
+        # for obj in queryset:
+        #     obj.book_list.clear()
+        for obj in queryset.all():
+            for book in obj.book_list.all():
+                book = Book.objects.get(pk=book.pk)
+                book.book_num += 1
+                book.save()
+                obj.book_list.remove(book)
         self.message_user(request, f'Количество книг на руках у читателя: 0')
 
 
