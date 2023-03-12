@@ -18,7 +18,7 @@ env = environ.Env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-ENV_FILE_PATH = BASE_DIR.joinpath('.env_docker')
+ENV_FILE_PATH = BASE_DIR.joinpath('.env')
 environ.Env.read_env(ENV_FILE_PATH)
 
 # Quick-start development settings - unsuitable for production
@@ -95,18 +95,16 @@ DATABASES = {
         'PORT': env.str('DB_PORT'),
     }
 }
-
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'library_bd',
-#         'USER': 'postgres',
-#         'PASSWORD': 'password',
+#         'NAME': 'library_db',
+#         'USER': 'cos',
+#         'PASSWORD': 'tan29',
 #         'HOST': 'localhost',
 #         'PORT': '5432',
 #     }
 # }
-
 
 
 # Password validation
@@ -152,3 +150,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = 'core.Reader'

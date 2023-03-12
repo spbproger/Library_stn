@@ -1,15 +1,13 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.urls import reverse
 from django.utils.html import format_html
 
 
-class Reader(models.Model):
-    name = models.CharField(max_length=50, verbose_name="Имя")
-    surname = models.CharField(max_length=50, verbose_name="Фамилия")
-    phone = models.BigIntegerField(verbose_name="Номер телефона")
+class Reader(AbstractUser):
+    phone = models.BigIntegerField(verbose_name="Номер телефона", null=True, blank=True)
     status = models.BooleanField(default=True, verbose_name="Активен")
     book_list = models.ManyToManyField("Book", blank=True, related_name="books", verbose_name="Список книг")
-    created = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
     edited = models.DateTimeField(auto_now=True, verbose_name="Дата последнего редактирования")
 
     class Meta:
@@ -17,14 +15,14 @@ class Reader(models.Model):
         verbose_name_plural = 'Читатели'
 
     def __str__(self):
-        return self.name
+        return self.first_name
 
     @property
     def fullname(self):
         """
         Определение метода объединения имени и фамилии как поля у модели Читателя
         """
-        return f"{self.name} {self.surname}"
+        return f"{self.first_name} {self.last_name}"
 
     def books_count(self):
         """

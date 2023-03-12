@@ -6,14 +6,14 @@ from .models import Reader, Author, Book
 
 @admin.register(Reader)
 class ReaderAdmin(admin.ModelAdmin):
-    list_display = ("surname", "name", "books_count", "phone", "status",
-                    "created", "edited")
+    list_display = ("last_name", "first_name", "books_count", "phone", "status",
+                    "date_joined", "edited")
     list_filter = ("status",)
-    list_display_links = ("name", "surname", "phone", "status")
+    list_display_links = ("first_name", "last_name", "phone", "status")
 
     fieldsets = (
         (None, {
-            "fields": ("surname", "name")
+            "fields": ("last_name", "first_name")
         }),
         ("Книги на руках", {
             "fields": ("book_list",)
