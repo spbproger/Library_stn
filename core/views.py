@@ -2,7 +2,7 @@ from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 from .models import Book, Author, Reader
 from .serializers import AuthorSerializer, ReaderSerializer, BookSerializer
-from .permissions import PermissionPolicyMixin
+from .permissions import PermissionPolicyMixin, PermissionAdminOrOwner
 
 
 class BookViewSet(PermissionPolicyMixin, ModelViewSet):
@@ -37,10 +37,10 @@ class ReaderViewSet(PermissionPolicyMixin, ModelViewSet):
     queryset = Reader.objects.all()
     serializer_class = ReaderSerializer
     permission_classes_per_method = {
-        'list': [IsAuthenticated, IsAdminUser],
+        'list': [PermissionAdminOrOwner],
         'create': [AllowAny],
-        'update': [IsAuthenticated, IsAdminUser],
-        'destroy': [IsAuthenticated, IsAdminUser],
-        'retrieve': [IsAuthenticated, IsAdminUser]
+        'update': [PermissionAdminOrOwner],
+        'destroy': [PermissionAdminOrOwner],
+        'retrieve': [PermissionAdminOrOwner]
     }
 
