@@ -9,9 +9,9 @@ class PermissionPolicyMixin:
             handler = None
 
         if (
-            handler
-            and self.permission_classes_per_method
-            and self.permission_classes_per_method.get(handler.__name__)
+                handler
+                and self.permission_classes_per_method
+                and self.permission_classes_per_method.get(handler.__name__)
         ):
             self.permission_classes = self.permission_classes_per_method.get(handler.__name__)
 
@@ -19,9 +19,10 @@ class PermissionPolicyMixin:
 
 
 class PermissionAdminOrOwner(IsAdminUser):
-    message = 'Информация только для Администратора или Владельца учетной записи'
-
     def has_permission(self, request, view):
-        return bool(request.user.id == int(view.kwargs.get('pk'))
-                    or
-                    request.user.is_staff)
+        if request.user.is_staff:
+            return True
+
+        if request.user.pk == int(view.kwargs.get('pk')):
+            return True
+        return False
