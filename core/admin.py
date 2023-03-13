@@ -6,10 +6,10 @@ from .models import Reader, Author, Book
 
 @admin.register(Reader)
 class ReaderAdmin(admin.ModelAdmin):
-    list_display = ("last_name", "first_name", "books_count", "phone", "status",
+    list_display = ("last_name", "first_name", "books_count", "phone", "is_active",
                     "date_joined", "edited")
-    list_filter = ("status",)
-    list_display_links = ("first_name", "last_name", "phone", "status")
+    list_filter = ("is_active",)
+    list_display_links = ("first_name", "last_name", "phone", "is_active")
 
     fieldsets = (
         (None, {
@@ -19,7 +19,7 @@ class ReaderAdmin(admin.ModelAdmin):
             "fields": ("book_list",)
         }),
         ("Дополнительные сведения", {
-            "fields": ("phone", "status")
+            "fields": ("phone", "is_active")
         }),
     )
 
@@ -30,7 +30,7 @@ class ReaderAdmin(admin.ModelAdmin):
         """
         Экшн изменения статуса читателя на Неактивного
         """
-        queryset.update(status=False)
+        queryset.update(is_active=False)
         self.message_user(request, f'Статус читателя изменен на "Неактивный"')
 
     @admin.action(description='Изменить статус: Активный')
@@ -38,7 +38,7 @@ class ReaderAdmin(admin.ModelAdmin):
         """
         Экшн изменения статуса читателя на Активного
         """
-        queryset.update(status=True)
+        queryset.update(is_active=True)
         self.message_user(request, f'Статус читателя изменен на "Активный"')
 
     @admin.action(description='Очистить список книг читателя')

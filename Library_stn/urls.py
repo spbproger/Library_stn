@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+
 from core import views
 
 from rest_framework.routers import SimpleRouter
@@ -27,5 +29,7 @@ router.register(r'books', views.BookViewSet, basename='book')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path("login/", TokenObtainPairView.as_view()),
+    path("refresh/", TokenRefreshView.as_view()),
     path('', include(router.urls)),
 ]

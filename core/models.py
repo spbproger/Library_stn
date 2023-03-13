@@ -6,7 +6,6 @@ from django.utils.html import format_html
 
 class Reader(AbstractUser):
     phone = models.BigIntegerField(verbose_name="Номер телефона", null=True, blank=True)
-    status = models.BooleanField(default=True, verbose_name="Активен")
     book_list = models.ManyToManyField("Book", blank=True, related_name="books", verbose_name="Список книг")
     edited = models.DateTimeField(auto_now=True, verbose_name="Дата последнего редактирования")
 

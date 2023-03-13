@@ -20,8 +20,11 @@ class ReaderSerializer(serializers.ModelSerializer):
         return attrs
 
     def create(self, validated_data):
-        book_list = validated_data.pop('book_list', [])
         reader = super().create(validated_data)
+        reader.set_password(reader.password)
+        reader.save()
+
+        book_list = validated_data.pop('book_list', [])
         for book in book_list:
             book.book_num -= 1
             book.save()
@@ -72,11 +75,18 @@ class AuthorSerializer(serializers.ModelSerializer):
 class PagesCountValidator:
     def __call__(self, value):
         if value < 0:
-            raise serializers.ValidationError("У книги не может быть отрицательное число страниц")
+            raise serializers.ValidationError("У книги не может быть отрицательное число страниц.")
+
+
+class BookNumValidator:
+    def __call__(self, value):
+        if value < 0:
+            raise serializers.ValidationError('Книг не может быть меньше нуля.')
 
 
 class BookSerializer(serializers.ModelSerializer):
     pages = serializers.IntegerField(validators=[PagesCountValidator()])
+    book_num = serializers.IntegerField(validators=[BookNumValidator()])
 
     class Meta:
         model = Book
