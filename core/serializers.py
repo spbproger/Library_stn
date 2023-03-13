@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 from django.core.validators import RegexValidator
 from .models import Book, Author, Reader
 
@@ -32,31 +33,23 @@ class ReaderSerializer(serializers.ModelSerializer):
         return reader
 
     def update(self, instance, validated_data):
-        books = validated_data.pop('book_list', [])
-        reader = super().update(instance, validated_data)
+        # Уменьшить количество книг в библиотеке, увеличить у читателя
+        if validated_data['book_list']:
+            for book in validated_data['book_list']:
+                if book not in instance.book_list.all():
+                    if book.book_num > 0:
+                        book.book_num -= 1
+                        book.save()
+                    # Если нет книг в библиотеке, то сообщить об ошибке
+                    else:
+                        raise ValidationError(f'Книга "{book.name}", которую вы хотите добавить, на данный момент отсутствует в библиотеке.')
+            # Увеличить количество книг в библиотеке, уменьшить у читателя
+            for book in instance.book_list.all():
+                if book not in validated_data['book_list']:
+                    book.book_num += 1
+                    book.save()
 
-        # Получение множеств книг
-        new_list_books = set(books)
-        old_list_books = set(instance.book_list.all())
-
-        # Обновление количества каждой книги
-        for book in old_list_books - new_list_books:
-            book.book_num += 1
-            book.save()
-
-        for book in new_list_books - old_list_books:
-            book.book_num -= 1
-            book.save()
-
-        # Добавление новой книги
-        for book in new_list_books - old_list_books:
-            instance.book_list.add(book)
-
-        # Удаление старой книги
-        for book in old_list_books - new_list_books:
-            instance.book_list.remove(book)
-
-        return reader
+        return super().update(instance, validated_data)
 
     class Meta:
         model = Reader
